@@ -13,6 +13,9 @@ Discarded input sections
  .bss           0x00000000        0x0 build/main.o
  .ARM.attributes
                 0x00000000       0x14 build/main.o
+ .bss           0x00000000        0x0 build/palindromeInit.o
+ .ARM.attributes
+                0x00000000       0x14 build/palindromeInit.o
  .bss           0x00000000        0x0 build/systemTimer.o
  .ARM.attributes
                 0x00000000       0x14 build/systemTimer.o
@@ -28,6 +31,7 @@ LOAD build/arithmetic.o
 LOAD build/blinkpattern.o
 LOAD build/gpio.o
 LOAD build/main.o
+LOAD build/palindromeInit.o
 LOAD build/systemTimer.o
 
 .init           0x00008000        0x4
@@ -35,7 +39,7 @@ LOAD build/systemTimer.o
  .init          0x00008000        0x4 build/main.o
                 0x00008000                _start
 
-.text           0x00008004      0x1f4
+.text           0x00008004      0x2a4
  *(.text)
  .text          0x00008004       0x58 build/arithmetic.o
                 0x00008004                IntDiv
@@ -46,20 +50,23 @@ LOAD build/systemTimer.o
                 0x0000810c                GetGpioAddress
                 0x00008114                SetGpioFunction
                 0x0000814c                SetGpio
- .text          0x0000818c       0x2c build/main.o
- .text          0x000081b8       0x40 build/systemTimer.o
-                0x000081b8                GetSystemTimerBase
-                0x000081c0                GetTimeStamp
-                0x000081d0                WaitMicroSec
+ .text          0x0000818c       0x38 build/main.o
+ .text          0x000081c4       0xa4 build/palindromeInit.o
+                0x000081c4                initPowersOfThree
+ .text          0x00008268       0x40 build/systemTimer.o
+                0x00008268                GetSystemTimerBase
+                0x00008270                GetTimeStamp
+                0x00008280                WaitMicroSec
 
-.data           0x000081f8       0x2c
+.data           0x000082a8       0x2c
  *(.data)
- .data          0x000081f8        0x0 build/arithmetic.o
- .data          0x000081f8        0x0 build/blinkpattern.o
- .data          0x000081f8        0x0 build/gpio.o
- .data          0x000081f8       0x2c build/main.o
-                0x000081fc                blinkzero
- .data          0x00008224        0x0 build/systemTimer.o
+ .data          0x000082a8        0x0 build/arithmetic.o
+ .data          0x000082a8        0x0 build/blinkpattern.o
+ .data          0x000082a8        0x0 build/gpio.o
+ .data          0x000082a8       0x2c build/main.o
+                0x000082ac                blinkzero
+ .data          0x000082d4        0x0 build/palindromeInit.o
+ .data          0x000082d4        0x0 build/systemTimer.o
 
 /DISCARD/
  *(*)

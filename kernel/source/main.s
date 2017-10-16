@@ -18,11 +18,19 @@ bl SetGpioFunction
 .unreq pinFunc
 .unreq pinNum
 
-ldr r0,=9001
+//do stuff
 
+ldr r0,=0x80000
+bl initPowersOfThree
+
+//first 6 hexdigits of 3^255 are given out in decimal blinks.
+ldr r0,=0x83FF0	//should be 1175984
+ldr r0,[r0]
 bl BlinkSingleRegister
 
-//turn off LED
+
+
+//turn off LED at the end
 
 pinNum .req r0
 pinVal .req r1

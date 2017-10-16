@@ -58,7 +58,7 @@ Disassembly of section .text:
     8088:	e3a0002f 	mov	r0, #47	; 0x2f
     808c:	eb00002e 	bl	814c <SetGpio>
     8090:	e59f0070 	ldr	r0, [pc, #112]	; 8108 <blinkDigits+0x24>
-    8094:	eb00004d 	bl	81d0 <WaitMicroSec>
+    8094:	eb000079 	bl	8280 <WaitMicroSec>
     8098:	e8bd000c 	pop	{r2, r3}
     809c:	e3530000 	cmp	r3, #0
     80a0:	0a000001 	beq	80ac <end>
@@ -94,7 +94,7 @@ Disassembly of section .text:
     80f8:	e3520000 	cmp	r2, #0
     80fc:	1afffff8 	bne	80e4 <blinkDigits>
     8100:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
-    8104:	000081fc 	.word	0x000081fc
+    8104:	000082ac 	.word	0x000082ac
     8108:	0003d090 	.word	0x0003d090
 
 0000810c <GetGpioAddress>:
@@ -142,36 +142,88 @@ Disassembly of section .text:
     8190:	e3a0002f 	mov	r0, #47	; 0x2f
     8194:	e3a01001 	mov	r1, #1
     8198:	ebffffdd 	bl	8114 <SetGpioFunction>
-    819c:	e59f0010 	ldr	r0, [pc, #16]	; 81b4 <infloop+0x4>
-    81a0:	ebffffc2 	bl	80b0 <BlinkSingleRegister>
-    81a4:	e3a0002f 	mov	r0, #47	; 0x2f
-    81a8:	e3a01001 	mov	r1, #1
-    81ac:	ebffffe6 	bl	814c <SetGpio>
+    819c:	e3a00702 	mov	r0, #524288	; 0x80000
+    81a0:	eb000007 	bl	81c4 <initPowersOfThree>
+    81a4:	e59f0014 	ldr	r0, [pc, #20]	; 81c0 <infloop+0x4>
+    81a8:	e5900000 	ldr	r0, [r0]
+    81ac:	ebffffbf 	bl	80b0 <BlinkSingleRegister>
+    81b0:	e3a0002f 	mov	r0, #47	; 0x2f
+    81b4:	e3a01001 	mov	r1, #1
+    81b8:	ebffffe3 	bl	814c <SetGpio>
 
-000081b0 <infloop>:
-    81b0:	eafffffe 	b	81b0 <infloop>
-    81b4:	00002329 	.word	0x00002329
+000081bc <infloop>:
+    81bc:	eafffffe 	b	81bc <infloop>
+    81c0:	00083ff0 	.word	0x00083ff0
 
-000081b8 <GetSystemTimerBase>:
-    81b8:	e59f0034 	ldr	r0, [pc, #52]	; 81f4 <loop+0x14>
-    81bc:	e1a0f00e 	mov	pc, lr
+000081c4 <initPowersOfThree>:
+    81c4:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    81c8:	e3a02001 	mov	r2, #1
+    81cc:	e8800004 	stm	r0, {r2}
+    81d0:	e2800004 	add	r0, r0, #4
+    81d4:	e3a0300f 	mov	r3, #15
 
-000081c0 <GetTimeStamp>:
-    81c0:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
-    81c4:	ebfffffb 	bl	81b8 <GetSystemTimerBase>
-    81c8:	e1c000d4 	ldrd	r0, [r0, #4]
-    81cc:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+000081d8 <putZeroes>:
+    81d8:	e3a02000 	mov	r2, #0
+    81dc:	e8800004 	stm	r0, {r2}
+    81e0:	e2800004 	add	r0, r0, #4
+    81e4:	e2433001 	sub	r3, r3, #1
+    81e8:	e3530000 	cmp	r3, #0
+    81ec:	1afffff9 	bne	81d8 <putZeroes>
+    81f0:	e3a030ff 	mov	r3, #255	; 0xff
 
-000081d0 <WaitMicroSec>:
-    81d0:	e1a02000 	mov	r2, r0
-    81d4:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
-    81d8:	ebfffff8 	bl	81c0 <GetTimeStamp>
-    81dc:	e1a03000 	mov	r3, r0
+000081f4 <bigloop>:
+    81f4:	e2433001 	sub	r3, r3, #1
+    81f8:	e52d3004 	push	{r3}		; (str r3, [sp, #-4]!)
+    81fc:	e3a03010 	mov	r3, #16
+    8200:	e3a01000 	mov	r1, #0
 
-000081e0 <loop>:
-    81e0:	ebfffff6 	bl	81c0 <GetTimeStamp>
-    81e4:	e0401003 	sub	r1, r0, r3
-    81e8:	e1510002 	cmp	r1, r2
-    81ec:	9afffffb 	bls	81e0 <loop>
-    81f0:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
-    81f4:	20003000 	.word	0x20003000
+00008204 <smallloop>:
+    8204:	e2433001 	sub	r3, r3, #1
+    8208:	e52d3004 	push	{r3}		; (str r3, [sp, #-4]!)
+    820c:	e3a03000 	mov	r3, #0
+    8210:	e2400040 	sub	r0, r0, #64	; 0x40
+    8214:	e5902000 	ldr	r2, [r0]
+    8218:	e52d0004 	push	{r0}		; (str r0, [sp, #-4]!)
+    821c:	e1a00002 	mov	r0, r2
+    8220:	e0922002 	adds	r2, r2, r2
+    8224:	e2a33000 	adc	r3, r3, #0
+    8228:	e0902002 	adds	r2, r0, r2
+    822c:	e2a33000 	adc	r3, r3, #0
+    8230:	e0912002 	adds	r2, r1, r2
+    8234:	e2a33000 	adc	r3, r3, #0
+    8238:	e1a01003 	mov	r1, r3
+    823c:	e49d0004 	pop	{r0}		; (ldr r0, [sp], #4)
+    8240:	e2800040 	add	r0, r0, #64	; 0x40
+    8244:	e8800004 	stm	r0, {r2}
+    8248:	e2800004 	add	r0, r0, #4
+    824c:	e49d3004 	pop	{r3}		; (ldr r3, [sp], #4)
+    8250:	e3530000 	cmp	r3, #0
+    8254:	1affffea 	bne	8204 <smallloop>
+    8258:	e49d3004 	pop	{r3}		; (ldr r3, [sp], #4)
+    825c:	e3530000 	cmp	r3, #0
+    8260:	1affffe3 	bne	81f4 <bigloop>
+    8264:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00008268 <GetSystemTimerBase>:
+    8268:	e59f0034 	ldr	r0, [pc, #52]	; 82a4 <loop+0x14>
+    826c:	e1a0f00e 	mov	pc, lr
+
+00008270 <GetTimeStamp>:
+    8270:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    8274:	ebfffffb 	bl	8268 <GetSystemTimerBase>
+    8278:	e1c000d4 	ldrd	r0, [r0, #4]
+    827c:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00008280 <WaitMicroSec>:
+    8280:	e1a02000 	mov	r2, r0
+    8284:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    8288:	ebfffff8 	bl	8270 <GetTimeStamp>
+    828c:	e1a03000 	mov	r3, r0
+
+00008290 <loop>:
+    8290:	ebfffff6 	bl	8270 <GetTimeStamp>
+    8294:	e0401003 	sub	r1, r0, r3
+    8298:	e1510002 	cmp	r1, r2
+    829c:	9afffffb 	bls	8290 <loop>
+    82a0:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+    82a4:	20003000 	.word	0x20003000
