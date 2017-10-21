@@ -11,7 +11,6 @@ BlinkDigit:
 
 	//load the pattern
 	ptrn .req r2
-	ldr ptrn,=blinkzero
 	//add 4 times the digit to the address of the first pattern so that the address is the correct one for the pattern we want
 	add ptrn,digit,lsl #2
 	ldr ptrn,[ptrn]
@@ -66,6 +65,8 @@ BlinkSingleRegister:
 
 	push {lr}
 
+	push {r4,r5,r6}	//make space
+	
 	//r0 is number to blink
 	Number .req r2
 	mov Number,r0
@@ -130,4 +131,6 @@ BlinkSingleRegister:
 	.unreq Digit
 	.unreq base
 
+	pop {r4,r5,r6}
+	
 	pop {pc}

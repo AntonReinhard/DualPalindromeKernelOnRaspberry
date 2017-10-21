@@ -2,6 +2,8 @@
 IntDiv:
 	//uses registers 0-6
 
+	push {r4,r5,r6}
+	
 	//r2 and r3 input, r0 = r2/r3, r1 = r2%r3
 	//this only divides unsigned integers
 
@@ -66,5 +68,7 @@ IntDiv:
 	.unreq dividend
 	.unreq divisor
 	.unreq shift
+	
+	pop {r4,r5,r6}
 
 	mov pc,lr
