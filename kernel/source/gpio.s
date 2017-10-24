@@ -1,40 +1,40 @@
-/******************************************************************************
-*	gpio.s
-*	 by Alex Chadwick
-*
-*	A sample assembly code implementation of the ok03 operating system.
-*	See main.s for details.
-*
-*	gpio.s contains the rountines for manipulation of the GPIO ports.
-******************************************************************************/
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@	gpio.s
+@	 by Alex Chadwick
+@
+@	A sample assembly code implementation of the ok03 operating system.
+@	See main.s for details.
+@
+@	gpio.s contains the rountines for manipulation of the GPIO ports.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-/* NEW
-* According to the EABI, all method calls should use r0-r3 for passing
-* parameters, should preserve registers r4-r8,r10-r11,sp between calls, and 
-* should return values in r0 (and r1 if needed). 
-* It does also stipulate many things about how methods should use the registers
-* and stack during calls, but we're using hand coded assembly. All we need to 
-* do is obey the start and end conditions, and if all our methods do this, they
-* would all work from C.
-*/
+@ NEW
+@ According to the EABI, all method calls should use r0-r3 for passing
+@ parameters, should preserve registers r4-r8,r10-r11,sp between calls, and
+@ should return values in r0 (and r1 if needed).
+@ It does also stipulate many things about how methods should use the registers
+@ and stack during calls, but we're using hand coded assembly. All we need to
+@ do is obey the start and end conditions, and if all our methods do this, they
+@ would all work from C.
+@
 
-/* NEW
-* GetGpioAddress returns the base address of the GPIO region as a physical address
-* in register r0.
-* C++ Signature: void* GetGpioAddress()
-*/
+@ NEW
+@ GetGpioAddress returns the base address of the GPIO region as a physical address
+@ in register r0.
+@ C++ Signature: void@ GetGpioAddress()
+@
 .globl GetGpioAddress
-GetGpioAddress: 
+GetGpioAddress:
 	gpioAddr .req r0
 	ldr gpioAddr,=0x20200000
 	mov pc,lr
 	.unreq gpioAddr
 
-/* NEW
-* SetGpioFunction sets the function of the GPIO register addressed by r0 to the
-* low  3 bits of r1.
-* C++ Signature: void SetGpioFunction(u32 gpioRegister, u32 function)
-*/
+@ NEW
+@ SetGpioFunction sets the function of the GPIO register addressed by r0 to the
+@ low  3 bits of r1.
+@ C++ Signature: void SetGpioFunction(u32 gpioRegister, u32 function)
+@
 .globl SetGpioFunction
 SetGpioFunction:
     pinNum .req r0
@@ -60,17 +60,17 @@ SetGpioFunction:
 	lsl pinFunc,pinNum
 
 	mask .req r3
-	mov mask,#7					/* r3 = 111 in binary */
-	lsl mask,pinNum				/* r3 = 11100..00 where the 111 is in the same position as the function in r1 */
+	mov mask,#7					@ r3 = 111 in binary @
+	lsl mask,pinNum				@ r3 = 11100..00 where the 111 is in the same position as the function in r1 @
 	.unreq pinNum
 
-	mvn mask,mask				/* r3 = 11..1100011..11 where the 000 is in the same poisiont as the function in r1 */
+	mvn mask,mask				@ r3 = 11..1100011..11 where the 000 is in the same poisiont as the function in r1 @
 	oldFunc .req r2
-	ldr oldFunc,[gpioAddr]		/* r2 = existing code */
-	and oldFunc,mask			/* r2 = existing code with bits for this pin all 0 */
+	ldr oldFunc,[gpioAddr]		@ r2 = existing code @
+	and oldFunc,mask			@ r2 = existing code with bits for this pin all 0 @
 	.unreq mask
 
-	orr pinFunc,oldFunc			/* r1 = existing code with correct bits set */
+	orr pinFunc,oldFunc			@ r1 = existing code with correct bits set @
 	.unreq oldFunc
 
 	str pinFunc,[gpioAddr]
@@ -78,21 +78,21 @@ SetGpioFunction:
 	.unreq gpioAddr
 	pop {pc}
 
-/* NEW
-* SetGpio sets the GPIO pin addressed by register r0 high if r1 != 0 and low
-* otherwise. 
-* C++ Signature: void SetGpio(u32 gpioRegister, u32 value)
-*/
+@ NEW
+@ SetGpio sets the GPIO pin addressed by register r0 high if r1 != 0 and low
+@ otherwise.
+@ C++ Signature: void SetGpio(u32 gpioRegister, u32 value)
+@
 .globl SetGpio
-SetGpio:	
+SetGpio:
     pinNum .req r0
     pinVal .req r1
 
 	cmp pinNum,#53
 	movhi pc,lr
 	push {lr}
-	mov r2,pinNum	
-    .unreq pinNum	
+	mov r2,pinNum
+    .unreq pinNum
     pinNum .req r2
 	bl GetGpioAddress
     gpioAddr .req r0

@@ -1,20 +1,20 @@
 .globl BlinkDigit
-//r0 is digit to blink
+@r0 is digit to blink
 BlinkDigit:
 	push {lr}
 
-	//sort out, if r0 is really a digit
+	@sort out, if r0 is really a digit
 	cmp r0,#9
 	pophi {pc}
 
 	digit .req r0
 
-	//load the pattern
+	@load the pattern
 	ptrn .req r2
-	//add 4 times the digit to the address of the first pattern so that the address is the correct one for the pattern we want
+	@add 4 times the digit to the address of the first pattern so that the address is the correct one for the pattern we want
 	add ptrn,digit,lsl #2
 	ldr ptrn,[ptrn]
-	//don't need the digit anymore
+	@don't need the digit anymore
 	.unreq digit
 	seq .req r3
 	mov seq,#31
@@ -22,33 +22,33 @@ BlinkDigit:
 
 	loop:
 
-		//get the pin state for the next blink or not blink into r1
+		@get the pin state for the next blink or not blink into r1
 		mov r1,#1
 		lsl r1,seq
 		and r1,ptrn
 
-		//save pattern and sequence ->
+		@save pattern and sequence ->
 		push {ptrn,seq}
 
-		//set pin
+		@set pin
 		mov r0,#47
 		bl SetGpio
 
-		//wait 0.25 sec
+		@wait 0.25 sec
 
 		ldr r0,=250000
 		bl WaitMicroSec
 
-		//get pattern and sequence back
+		@get pattern and sequence back
 		pop {ptrn,seq}
 
-		//subtract 1 to seq, if it's 0 break out
+		@subtract 1 to seq, if it's 0 break out
 
 		cmp seq,#0
 		beq end
 		sub seq,#1
 
-	//as long as seq is not zero keep going
+	@as long as seq is not zero keep going
 	b loop
 
 	end:
@@ -60,55 +60,55 @@ BlinkDigit:
 
 .globl BlinkSingleRegister
 BlinkSingleRegister:
-	//uses register 0-6
-	//displays numbers digit by digit in base 10
+	@uses register 0-6
+	@displays numbers digit by digit in base 10
 
 	push {lr}
 
-	push {r4,r5,r6}	//make space
-	
-	//r0 is number to blink
+	push {r4,r5,r6}	@make space
+
+	@r0 is number to blink
 	Number .req r2
 	mov Number,r0
 	DigitCount .req r0
 	mov DigitCount,#0
 	Digit .req r1
-	
-	//base is defined here
+
+	@base is defined here
 	base .req r3
 	mov base,#10
-	
+
 	cumulateDigits:
-		
+
 		add DigitCount,#1
 
-		//this is for octal number system
-		//Digit = number % 8
-		//and Digit,Number,#7
-		//push {Digit}
-		//number = number / 8
-		//lsr Number,Number,#3
-		
-		//number in r2 is dividend
-		//base is in r3 as divisor
+		@this is for octal number system
+		@Digit = number % 8
+		@and Digit,Number,#7
+		@push {Digit}
+		@number = number / 8
+		@lsr Number,Number,#3
 
-		//Digit (r1) is gonna be remainder, r0 result
+		@number in r2 is dividend
+		@base is in r3 as divisor
+
+		@Digit (r1) is gonna be remainder, r0 result
 
 		push {DigitCount, base}
 
 		bl IntDiv
 
 		mov number,r0
-		
+
 		pop {DigitCount, base}
 
 		push {Digit}
 
-		//jump back, while Number is not zero
+		@jump back, while Number is not zero
 		cmp Number,#0
 		bne cumulateDigits
 
-	//DigitCount can't be in r0, need that for BlinkDigit
+	@DigitCount can't be in r0, need that for BlinkDigit
 	.unreq DigitCount
 	mov r2,r0
 	DigitCount .req r2
@@ -132,5 +132,5 @@ BlinkSingleRegister:
 	.unreq base
 
 	pop {r4,r5,r6}
-	
+
 	pop {pc}

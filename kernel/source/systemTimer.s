@@ -12,7 +12,7 @@ GetTimeStamp:
 
 .globl WaitMicroSec
 WaitMicroSec:
-	//input r0 is amount of micro seconds to wait
+	@input r0 is amount of micro seconds to wait
 	delay .req r2
 	mov delay,r0
 	push {lr}

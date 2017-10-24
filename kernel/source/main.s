@@ -8,7 +8,7 @@ b main
 main:
 mov sp,#0x8000
 
-//set Function of ACT LED (pin 47, function 1 (out))
+@set Function of ACT LED (pin 47, function 1 (out))
 
 pinNum .req r0
 pinFunc .req r1
@@ -18,19 +18,20 @@ bl SetGpioFunction
 .unreq pinFunc
 .unreq pinNum
 
-//do stuff
+@do stuff
 bl InitMatrix
 
-//ldr r0,=0x80000
-//bl initPowersOfThree
+ldr r0,=0x80000
+bl initPowersOfThree
 
-//first 6 hexdigits of 3^255 are given out in decimal blinks.
-//ldr r0,=0x83FF0	//should be 1175984
-//ldr r0,[r0]
-//bl BlinkSingleRegister
+@first 6 hexdigits of 3^255 are given out in decimal blinks.
+ldr r0,=0x83FF0	@should be 1175984
+ldr r0,[r0]
+mov r1,#75
+bl SlideNumber
 
 
-//turn off LED at the end
+@turn off LED at the end
 
 pinNum .req r0
 pinVal .req r1
@@ -40,15 +41,15 @@ bl SetGpio
 .unreq pinNum
 .unreq pinVal
 
-//infinite Loop
+@infinite Loop
 infloop:
 
-	ldr r0,=0x539	//number
-	mov r1,#125		//duration
+	ldr r0,=0x539	@number
+	mov r1,#50		@duration
 	bl SlideNumber
-	
-	ldr r0,=0x2A	//number
-	mov r1,#125		//duration
+
+	ldr r0,=0x2A	@number
+	mov r1,#50		@duration
 	bl SlideNumber
 
 b infloop
