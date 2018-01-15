@@ -105,8 +105,46 @@ Div8Reg:
 
 	pop {pc}
 
-.globl LSL8Reg
-@r0 is adress of target number
-@r1 i
+.globl LSL16Reg
+@r0 is address of target number
+@r1 how many bits are leftshifted
+@r2 target address
 LSL8Reg:
+	push {lr}
 	
+	push {r4,r5,r6,r7} @space
+	
+	currentaddress .req r0
+	shift .req r1
+	currenttargetaddress .req r2
+	index .req r3
+	currentregister .req r4
+	carry .req r5
+	safe .req r6
+	inverseshift .req r7
+	
+	rsb inverseshift, shift, #32		@reverse subtract, inverseshift = 32 - shift
+	
+	mov index, #1
+	mov carry, #0
+	
+	loop:
+		ldr currentregister, currentaddress
+		mov safe, currentregister
+		
+		lsl currentregister, currentregister, shift
+		add currentregister, carry	@there can be no carry from this operation
+		
+		@calculate new carry
+		
+		lsr carry, safe, inverseshift
+		
+		add currenttargetaddress, #8	@8 Byte = 32 Bit = 1 Register (I hope)
+		add currentaddress, #8
+		add index, #1
+		cmp index, #16
+		bne loop			@branch back, while we're not at 16 registers yet
+	
+	pop {r4,r5,r6,r7} @get the variables back
+	
+	pop {pc}
