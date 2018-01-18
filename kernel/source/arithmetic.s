@@ -3,11 +3,11 @@
 @this only divides unsigned integers
 IntDiv:
 
-	push {r4,r5,r6}
-
 	@can't divide by zero
 	cmp r3,#0
 	moveq pc,lr
+
+	push {r4,r5,r6}
 
 	result .req r0
 	remainder .req r1
@@ -79,27 +79,21 @@ IntDiv:
 Div8Reg:
 	push {lr}
 
+	@can't divide by zero
+	cmp r1,#0
+	moveq pc,lr
+
 	push {r4,r5,r6,r7,r8,r9} @space
 
-	divadress .req r4
-	mov divadress,r0
-	dividend .req r5
-	mov dividend,r1
-	divbuffer .req r6
-	outputadr .req r7
-	mov outputadr,r2
+	currentInputAddress .req r0
+	currentDivisor .req r3
+	dividend .req r1
+	currentResultAddress .req r2
+	currentResult .req r4
+	bitIndex .req r5 @which bit is processed right now from 0 to 31
+	regIndex .req r6 @which register is processed right now from 15 to 0
 
-	add divaddress,#60	@last 4 Bytes first, they are the highest ones
-
-	ldr r0,[divadress]	@current divisor in r0
-	divisor .req r0
-
-	mov r2,divisor
-	mov r3,dividend
-
-	bl IntDiv
-
-
+	
 
 	pop {r4,r5,r6,r7,r8,r9} @get it back
 
@@ -109,4 +103,3 @@ Div8Reg:
 @r0 is adress of target number
 @r1 i
 LSL8Reg:
-	
