@@ -3,7 +3,7 @@ This is a repository where I keep my kernels for the RaspberryPi Zero W. Eventua
 
 See http://chesswanks.com/txt/BigDualPalindromes.txt for how I want to do this roughly.
 
-*Try it yourself*
+**Try it yourself**
 
 To try one of these kernels on your own RPi Zero (W) take a Micro SD card, make
 sure that it is formatted to fat32, copy the bootcode.bin and start.elf files in the firmware folder on it and the kernel you want to try. The kernel must be named kernel.img on the SD card for it to work.

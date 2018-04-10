@@ -1,74 +1,76 @@
 
 build/output.elf:     file format elf32-littlearm
 
+
 Disassembly of section .init:
 
 00008000 <_start>:
     8000:	ea00005e 	b	8180 <main>
+
 Disassembly of section .text:
 
 00008004 <initPowersOfThree>:
-    8004:	e92d4000 	push	{lr}
-    8008:	e3a02001 	mov	r2, #1	; 0x1
+    8004:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    8008:	e3a02001 	mov	r2, #1
     800c:	e8800004 	stm	r0, {r2}
-    8010:	e2800004 	add	r0, r0, #4	; 0x4
-    8014:	e3a0300f 	mov	r3, #15	; 0xf
+    8010:	e2800004 	add	r0, r0, #4
+    8014:	e3a0300f 	mov	r3, #15
 
 00008018 <putZeroes>:
-    8018:	e3a02000 	mov	r2, #0	; 0x0
+    8018:	e3a02000 	mov	r2, #0
     801c:	e8800004 	stm	r0, {r2}
-    8020:	e2800004 	add	r0, r0, #4	; 0x4
-    8024:	e2433001 	sub	r3, r3, #1	; 0x1
-    8028:	e3530000 	cmp	r3, #0	; 0x0
+    8020:	e2800004 	add	r0, r0, #4
+    8024:	e2433001 	sub	r3, r3, #1
+    8028:	e3530000 	cmp	r3, #0
     802c:	1afffff9 	bne	8018 <putZeroes>
     8030:	e3a030ff 	mov	r3, #255	; 0xff
 
 00008034 <bigloop>:
-    8034:	e2433001 	sub	r3, r3, #1	; 0x1
-    8038:	e92d0008 	push	{r3}
-    803c:	e3a03010 	mov	r3, #16	; 0x10
-    8040:	e3a01000 	mov	r1, #0	; 0x0
+    8034:	e2433001 	sub	r3, r3, #1
+    8038:	e52d3004 	push	{r3}		; (str r3, [sp, #-4]!)
+    803c:	e3a03010 	mov	r3, #16
+    8040:	e3a01000 	mov	r1, #0
 
 00008044 <smallloop>:
-    8044:	e2433001 	sub	r3, r3, #1	; 0x1
-    8048:	e92d0008 	push	{r3}
-    804c:	e3a03000 	mov	r3, #0	; 0x0
+    8044:	e2433001 	sub	r3, r3, #1
+    8048:	e52d3004 	push	{r3}		; (str r3, [sp, #-4]!)
+    804c:	e3a03000 	mov	r3, #0
     8050:	e2400040 	sub	r0, r0, #64	; 0x40
     8054:	e5902000 	ldr	r2, [r0]
-    8058:	e92d0001 	push	{r0}
+    8058:	e52d0004 	push	{r0}		; (str r0, [sp, #-4]!)
     805c:	e1a00002 	mov	r0, r2
     8060:	e0922002 	adds	r2, r2, r2
-    8064:	e2a33000 	adc	r3, r3, #0	; 0x0
+    8064:	e2a33000 	adc	r3, r3, #0
     8068:	e0902002 	adds	r2, r0, r2
-    806c:	e2a33000 	adc	r3, r3, #0	; 0x0
+    806c:	e2a33000 	adc	r3, r3, #0
     8070:	e0912002 	adds	r2, r1, r2
-    8074:	e2a33000 	adc	r3, r3, #0	; 0x0
+    8074:	e2a33000 	adc	r3, r3, #0
     8078:	e1a01003 	mov	r1, r3
-    807c:	e8bd0001 	pop	{r0}
+    807c:	e49d0004 	pop	{r0}		; (ldr r0, [sp], #4)
     8080:	e2800040 	add	r0, r0, #64	; 0x40
     8084:	e8800004 	stm	r0, {r2}
-    8088:	e2800004 	add	r0, r0, #4	; 0x4
-    808c:	e8bd0008 	pop	{r3}
-    8090:	e3530000 	cmp	r3, #0	; 0x0
+    8088:	e2800004 	add	r0, r0, #4
+    808c:	e49d3004 	pop	{r3}		; (ldr r3, [sp], #4)
+    8090:	e3530000 	cmp	r3, #0
     8094:	1affffea 	bne	8044 <smallloop>
-    8098:	e8bd0008 	pop	{r3}
-    809c:	e3530000 	cmp	r3, #0	; 0x0
+    8098:	e49d3004 	pop	{r3}		; (ldr r3, [sp], #4)
+    809c:	e3530000 	cmp	r3, #0
     80a0:	1affffe3 	bne	8034 <bigloop>
-    80a4:	e8bd8000 	pop	{pc}
+    80a4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
 000080a8 <GetSystemTimerBase>:
     80a8:	e59f0034 	ldr	r0, [pc, #52]	; 80e4 <loop+0x14>
     80ac:	e1a0f00e 	mov	pc, lr
 
 000080b0 <GetTimeStamp>:
-    80b0:	e92d4000 	push	{lr}
+    80b0:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
     80b4:	ebfffffb 	bl	80a8 <GetSystemTimerBase>
     80b8:	e1c000d4 	ldrd	r0, [r0, #4]
-    80bc:	e8bd8000 	pop	{pc}
+    80bc:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
 000080c0 <WaitMicroSec>:
     80c0:	e1a02000 	mov	r2, r0
-    80c4:	e92d4000 	push	{lr}
+    80c4:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
     80c8:	ebfffff8 	bl	80b0 <GetTimeStamp>
     80cc:	e1a03000 	mov	r3, r0
 
@@ -77,7 +79,7 @@ Disassembly of section .text:
     80d4:	e0401003 	sub	r1, r0, r3
     80d8:	e1510002 	cmp	r1, r2
     80dc:	9afffffb 	bls	80d0 <loop>
-    80e0:	e8bd8000 	pop	{pc}
+    80e0:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
     80e4:	20003000 	.word	0x20003000
 
 000080e8 <GetGpioAddress>:
@@ -86,467 +88,510 @@ Disassembly of section .text:
 
 000080f0 <SetGpioFunction>:
     80f0:	e3500035 	cmp	r0, #53	; 0x35
-    80f4:	93510007 	cmpls	r1, #7	; 0x7
+    80f4:	93510007 	cmpls	r1, #7
     80f8:	81a0f00e 	movhi	pc, lr
-    80fc:	e92d4000 	push	{lr}
+    80fc:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
     8100:	e1a02000 	mov	r2, r0
     8104:	ebfffff7 	bl	80e8 <GetGpioAddress>
 
 00008108 <functionLoop$>:
-    8108:	e3520009 	cmp	r2, #9	; 0x9
-    810c:	8242200a 	subhi	r2, r2, #10	; 0xa
-    8110:	82800004 	addhi	r0, r0, #4	; 0x4
+    8108:	e3520009 	cmp	r2, #9
+    810c:	8242200a 	subhi	r2, r2, #10
+    8110:	82800004 	addhi	r0, r0, #4
     8114:	8afffffb 	bhi	8108 <functionLoop$>
     8118:	e0822082 	add	r2, r2, r2, lsl #1
     811c:	e1a01211 	lsl	r1, r1, r2
-    8120:	e3a03007 	mov	r3, #7	; 0x7
+    8120:	e3a03007 	mov	r3, #7
     8124:	e1a03213 	lsl	r3, r3, r2
     8128:	e1e03003 	mvn	r3, r3
     812c:	e5902000 	ldr	r2, [r0]
     8130:	e0022003 	and	r2, r2, r3
     8134:	e1811002 	orr	r1, r1, r2
     8138:	e5801000 	str	r1, [r0]
-    813c:	e8bd8000 	pop	{pc}
+    813c:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
 00008140 <SetGpio>:
     8140:	e3500035 	cmp	r0, #53	; 0x35
     8144:	81a0f00e 	movhi	pc, lr
-    8148:	e92d4000 	push	{lr}
+    8148:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
     814c:	e1a02000 	mov	r2, r0
     8150:	ebffffe4 	bl	80e8 <GetGpioAddress>
     8154:	e1a032a2 	lsr	r3, r2, #5
     8158:	e1a03103 	lsl	r3, r3, #2
     815c:	e0800003 	add	r0, r0, r3
-    8160:	e202201f 	and	r2, r2, #31	; 0x1f
-    8164:	e3a03001 	mov	r3, #1	; 0x1
+    8160:	e202201f 	and	r2, r2, #31
+    8164:	e3a03001 	mov	r3, #1
     8168:	e1a03213 	lsl	r3, r3, r2
-    816c:	e3310000 	teq	r1, #0	; 0x0
-    8170:	05803028 	streq	r3, [r0, #40]
+    816c:	e3310000 	teq	r1, #0
+    8170:	05803028 	streq	r3, [r0, #40]	; 0x28
     8174:	1580301c 	strne	r3, [r0, #28]
-    8178:	e8bd8000 	pop	{pc}
+    8178:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
     817c:	20200000 	.word	0x20200000
 
 00008180 <main>:
     8180:	e3a0d902 	mov	sp, #32768	; 0x8000
     8184:	e3a0002f 	mov	r0, #47	; 0x2f
-    8188:	e3a01001 	mov	r1, #1	; 0x1
+    8188:	e3a01001 	mov	r1, #1
     818c:	ebffffd7 	bl	80f0 <SetGpioFunction>
-    8190:	eb00012d 	bl	864c <InitMatrix>
-    8194:	e3a00702 	mov	r0, #524288	; 0x80000
-    8198:	ebffff99 	bl	8004 <initPowersOfThree>
-    819c:	e59f0030 	ldr	r0, [pc, #48]	; 81d4 <infloop+0x1c>
-    81a0:	e5900000 	ldr	r0, [r0]
-    81a4:	e3a0104b 	mov	r1, #75	; 0x4b
-    81a8:	eb00004f 	bl	82ec <SlideNumber>
-    81ac:	e3a0002f 	mov	r0, #47	; 0x2f
-    81b0:	e3a01001 	mov	r1, #1	; 0x1
-    81b4:	ebffffe1 	bl	8140 <SetGpio>
+    8190:	eb000150 	bl	86d8 <InitMatrix>
+    8194:	e3a04601 	mov	r4, #1048576	; 0x100000
+    8198:	e59f5060 	ldr	r5, [pc, #96]	; 8200 <infloop+0x1c>
+    819c:	e3a01005 	mov	r1, #5
+    81a0:	e5841000 	str	r1, [r4]
+    81a4:	e3a01000 	mov	r1, #0
+    81a8:	e5851000 	str	r1, [r5]
 
-000081b8 <infloop>:
-    81b8:	e59f0018 	ldr	r0, [pc, #24]	; 81d8 <infloop+0x20>
-    81bc:	e3a01032 	mov	r1, #50	; 0x32
-    81c0:	eb000049 	bl	82ec <SlideNumber>
-    81c4:	e3a0002a 	mov	r0, #42	; 0x2a
-    81c8:	e3a01032 	mov	r1, #50	; 0x32
-    81cc:	eb000046 	bl	82ec <SlideNumber>
-    81d0:	eafffff8 	b	81b8 <infloop>
-    81d4:	00083ff0 	.word	0x00083ff0
-    81d8:	00000539 	.word	0x00000539
+000081ac <Infiniteloop>:
+    81ac:	e3a01032 	mov	r1, #50	; 0x32
+    81b0:	e5940000 	ldr	r0, [r4]
+    81b4:	eb00006f 	bl	8378 <SlideNumber>
+    81b8:	e3a01032 	mov	r1, #50	; 0x32
+    81bc:	e5950000 	ldr	r0, [r5]
+    81c0:	eb00006c 	bl	8378 <SlideNumber>
+    81c4:	e1a00004 	mov	r0, r4
+    81c8:	e3a01003 	mov	r1, #3
+    81cc:	e1a02004 	mov	r2, r4
+    81d0:	eb00002a 	bl	8280 <LSL16Reg>
+    81d4:	eafffff4 	b	81ac <Infiniteloop>
+    81d8:	e3a0002f 	mov	r0, #47	; 0x2f
+    81dc:	e3a01001 	mov	r1, #1
+    81e0:	ebffffd6 	bl	8140 <SetGpio>
 
-000081dc <IntDiv>:
-    81dc:	e92d0070 	push	{r4, r5, r6}
-    81e0:	e3530000 	cmp	r3, #0	; 0x0
-    81e4:	01a0f00e 	moveq	pc, lr
-    81e8:	e3a00000 	mov	r0, #0	; 0x0
-    81ec:	e16f5f12 	clz	r5, r2
-    81f0:	e16f6f13 	clz	r6, r3
-    81f4:	e3a04000 	mov	r4, #0	; 0x0
-    81f8:	e1550006 	cmp	r5, r6
-    81fc:	8a000001 	bhi	8208 <skip>
-    8200:	e0464005 	sub	r4, r6, r5
-    8204:	e1a03413 	lsl	r3, r3, r4
+000081e4 <infloop>:
+    81e4:	e59f0018 	ldr	r0, [pc, #24]	; 8204 <infloop+0x20>
+    81e8:	e3a01032 	mov	r1, #50	; 0x32
+    81ec:	eb000061 	bl	8378 <SlideNumber>
+    81f0:	e3a0002a 	mov	r0, #42	; 0x2a
+    81f4:	e3a01032 	mov	r1, #50	; 0x32
+    81f8:	eb00005e 	bl	8378 <SlideNumber>
+    81fc:	eafffff8 	b	81e4 <infloop>
+    8200:	00100004 	.word	0x00100004
+    8204:	00000539 	.word	0x00000539
 
-00008208 <skip>:
-    8208:	e1a01002 	mov	r1, r2
+00008208 <IntDiv>:
+    8208:	e3530000 	cmp	r3, #0
+    820c:	01a0f00e 	moveq	pc, lr
+    8210:	e92d0070 	push	{r4, r5, r6}
+    8214:	e3a00000 	mov	r0, #0
+    8218:	e16f5f12 	clz	r5, r2
+    821c:	e16f6f13 	clz	r6, r3
+    8220:	e3a04000 	mov	r4, #0
+    8224:	e1550006 	cmp	r5, r6
+    8228:	8a000001 	bhi	8234 <skip>
+    822c:	e0464005 	sub	r4, r6, r5
+    8230:	e1a03413 	lsl	r3, r3, r4
 
-0000820c <subtract>:
-    820c:	e1530001 	cmp	r3, r1
-    8210:	8a000001 	bhi	821c <skip2>
-    8214:	e0411003 	sub	r1, r1, r3
-    8218:	e2800001 	add	r0, r0, #1	; 0x1
+00008234 <skip>:
+    8234:	e1a01002 	mov	r1, r2
 
-0000821c <skip2>:
-    821c:	e3540000 	cmp	r4, #0	; 0x0
-    8220:	0a000003 	beq	8234 <end>
-    8224:	e1a00080 	lsl	r0, r0, #1
-    8228:	e1a030a3 	lsr	r3, r3, #1
-    822c:	e2444001 	sub	r4, r4, #1	; 0x1
-    8230:	eafffff5 	b	820c <subtract>
+00008238 <subtract>:
+    8238:	e1530001 	cmp	r3, r1
+    823c:	8a000001 	bhi	8248 <skip2>
+    8240:	e0411003 	sub	r1, r1, r3
+    8244:	e2800001 	add	r0, r0, #1
 
-00008234 <end>:
-    8234:	e8bd0070 	pop	{r4, r5, r6}
-    8238:	e1a0f00e 	mov	pc, lr
+00008248 <skip2>:
+    8248:	e3540000 	cmp	r4, #0
+    824c:	0a000003 	beq	8260 <end>
+    8250:	e1a00080 	lsl	r0, r0, #1
+    8254:	e1a030a3 	lsr	r3, r3, #1
+    8258:	e2444001 	sub	r4, r4, #1
+    825c:	eafffff5 	b	8238 <subtract>
 
-0000823c <BlinkDigit>:
-    823c:	e92d4000 	push	{lr}
-    8240:	e3500009 	cmp	r0, #9	; 0x9
-    8244:	88bd8000 	pophi	{pc}
-    8248:	e0822100 	add	r2, r2, r0, lsl #2
-    824c:	e5922000 	ldr	r2, [r2]
-    8250:	e3a0301f 	mov	r3, #31	; 0x1f
+00008260 <end>:
+    8260:	e8bd0070 	pop	{r4, r5, r6}
+    8264:	e1a0f00e 	mov	pc, lr
 
-00008254 <loop>:
-    8254:	e3a01001 	mov	r1, #1	; 0x1
-    8258:	e1a01311 	lsl	r1, r1, r3
-    825c:	e0011002 	and	r1, r1, r2
-    8260:	e92d000c 	push	{r2, r3}
-    8264:	e3a0002f 	mov	r0, #47	; 0x2f
-    8268:	ebffffb4 	bl	8140 <SetGpio>
-    826c:	e59f0074 	ldr	r0, [pc, #116]	; 82e8 <blinkDigits+0x24>
-    8270:	ebffff92 	bl	80c0 <WaitMicroSec>
-    8274:	e8bd000c 	pop	{r2, r3}
-    8278:	e3530000 	cmp	r3, #0	; 0x0
-    827c:	0a000001 	beq	8288 <end>
-    8280:	e2433001 	sub	r3, r3, #1	; 0x1
-    8284:	eafffff2 	b	8254 <loop>
+00008268 <Div16Reg>:
+    8268:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    826c:	e3510000 	cmp	r1, #0
+    8270:	01a0f00e 	moveq	pc, lr
+    8274:	e92d0070 	push	{r4, r5, r6}
+    8278:	e8bd0070 	pop	{r4, r5, r6}
+    827c:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-00008288 <end>:
-    8288:	e8bd8000 	pop	{pc}
+00008280 <LSL16Reg>:
+    8280:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    8284:	e92d00f0 	push	{r4, r5, r6, r7}
+    8288:	e2617020 	rsb	r7, r1, #32
+    828c:	e3a03001 	mov	r3, #1
+    8290:	e3a05000 	mov	r5, #0
 
-0000828c <BlinkSingleRegister>:
-    828c:	e92d4000 	push	{lr}
-    8290:	e92d0070 	push	{r4, r5, r6}
-    8294:	e1a02000 	mov	r2, r0
-    8298:	e3a00000 	mov	r0, #0	; 0x0
-    829c:	e3a0300a 	mov	r3, #10	; 0xa
+00008294 <loop>:
+    8294:	e5904000 	ldr	r4, [r0]
+    8298:	e1a06004 	mov	r6, r4
+    829c:	e1a04114 	lsl	r4, r4, r1
+    82a0:	e0844005 	add	r4, r4, r5
+    82a4:	e5824000 	str	r4, [r2]
+    82a8:	e1a05736 	lsr	r5, r6, r7
+    82ac:	e2822004 	add	r2, r2, #4
+    82b0:	e2800004 	add	r0, r0, #4
+    82b4:	e2833001 	add	r3, r3, #1
+    82b8:	e3530010 	cmp	r3, #16
+    82bc:	1afffff4 	bne	8294 <loop>
+    82c0:	e8bd00f0 	pop	{r4, r5, r6, r7}
+    82c4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-000082a0 <cumulateDigits>:
-    82a0:	e2800001 	add	r0, r0, #1	; 0x1
-    82a4:	e92d0009 	push	{r0, r3}
-    82a8:	ebffffcb 	bl	81dc <IntDiv>
-    82ac:	e1a02000 	mov	r2, r0
-    82b0:	e8bd0009 	pop	{r0, r3}
-    82b4:	e92d0002 	push	{r1}
-    82b8:	e3520000 	cmp	r2, #0	; 0x0
-    82bc:	1afffff7 	bne	82a0 <cumulateDigits>
-    82c0:	e1a02000 	mov	r2, r0
+000082c8 <BlinkDigit>:
+    82c8:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    82cc:	e3500009 	cmp	r0, #9
+    82d0:	849df004 	pophi	{pc}		; (ldrhi pc, [sp], #4)
+    82d4:	e0822100 	add	r2, r2, r0, lsl #2
+    82d8:	e5922000 	ldr	r2, [r2]
+    82dc:	e3a0301f 	mov	r3, #31
 
-000082c4 <blinkDigits>:
-    82c4:	e8bd0001 	pop	{r0}
-    82c8:	e92d0004 	push	{r2}
-    82cc:	ebffffda 	bl	823c <BlinkDigit>
-    82d0:	e8bd0004 	pop	{r2}
-    82d4:	e2422001 	sub	r2, r2, #1	; 0x1
-    82d8:	e3520000 	cmp	r2, #0	; 0x0
-    82dc:	1afffff8 	bne	82c4 <blinkDigits>
-    82e0:	e8bd0070 	pop	{r4, r5, r6}
-    82e4:	e8bd8000 	pop	{pc}
-    82e8:	0003d090 	.word	0x0003d090
+000082e0 <loop>:
+    82e0:	e3a01001 	mov	r1, #1
+    82e4:	e1a01311 	lsl	r1, r1, r3
+    82e8:	e0011002 	and	r1, r1, r2
+    82ec:	e92d000c 	push	{r2, r3}
+    82f0:	e3a0002f 	mov	r0, #47	; 0x2f
+    82f4:	ebffff91 	bl	8140 <SetGpio>
+    82f8:	e59f0074 	ldr	r0, [pc, #116]	; 8374 <blinkDigits+0x24>
+    82fc:	ebffff6f 	bl	80c0 <WaitMicroSec>
+    8300:	e8bd000c 	pop	{r2, r3}
+    8304:	e3530000 	cmp	r3, #0
+    8308:	0a000001 	beq	8314 <end>
+    830c:	e2433001 	sub	r3, r3, #1
+    8310:	eafffff2 	b	82e0 <loop>
 
-000082ec <SlideNumber>:
-    82ec:	e92d4000 	push	{lr}
-    82f0:	e92d0010 	push	{r4}
-    82f4:	e1a04001 	mov	r4, r1
-    82f8:	e1a02000 	mov	r2, r0
-    82fc:	e3a00000 	mov	r0, #0	; 0x0
-    8300:	e3a0300a 	mov	r3, #10	; 0xa
-    8304:	e3a0100b 	mov	r1, #11	; 0xb
-    8308:	e92d0002 	push	{r1}
+00008314 <end>:
+    8314:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-0000830c <cumulateDigits>:
-    830c:	e2800001 	add	r0, r0, #1	; 0x1
-    8310:	e92d0009 	push	{r0, r3}
-    8314:	ebffffb0 	bl	81dc <IntDiv>
-    8318:	e1a02000 	mov	r2, r0
-    831c:	e8bd0009 	pop	{r0, r3}
-    8320:	e92d0002 	push	{r1}
-    8324:	e3520000 	cmp	r2, #0	; 0x0
-    8328:	1afffff7 	bne	830c <cumulateDigits>
-    832c:	e3a0100b 	mov	r1, #11	; 0xb
-    8330:	e2800001 	add	r0, r0, #1	; 0x1
-    8334:	e92d0002 	push	{r1}
-    8338:	e1a03000 	mov	r3, r0
-    833c:	e8bd0002 	pop	{r1}
+00008318 <BlinkSingleRegister>:
+    8318:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    831c:	e92d0070 	push	{r4, r5, r6}
+    8320:	e1a02000 	mov	r2, r0
+    8324:	e3a00000 	mov	r0, #0
+    8328:	e3a0300a 	mov	r3, #10
 
-00008340 <displayDigits>:
-    8340:	e1a00001 	mov	r0, r1
-    8344:	e8bd0002 	pop	{r1}
-    8348:	e1a02004 	mov	r2, r4
-    834c:	e92d000a 	push	{r1, r3}
-    8350:	eb000081 	bl	855c <SlideLeft>
-    8354:	e8bd000a 	pop	{r1, r3}
-    8358:	e2433001 	sub	r3, r3, #1	; 0x1
-    835c:	e3530000 	cmp	r3, #0	; 0x0
-    8360:	1afffff6 	bne	8340 <displayDigits>
-    8364:	e8bd0010 	pop	{r4}
-    8368:	e8bd8000 	pop	{pc}
+0000832c <cumulateDigits>:
+    832c:	e2800001 	add	r0, r0, #1
+    8330:	e92d0009 	push	{r0, r3}
+    8334:	ebffffb3 	bl	8208 <IntDiv>
+    8338:	e1a02000 	mov	r2, r0
+    833c:	e8bd0009 	pop	{r0, r3}
+    8340:	e52d1004 	push	{r1}		; (str r1, [sp, #-4]!)
+    8344:	e3520000 	cmp	r2, #0
+    8348:	1afffff7 	bne	832c <cumulateDigits>
+    834c:	e1a02000 	mov	r2, r0
 
-0000836c <DisplayDoubleRegister>:
-    836c:	e92d4000 	push	{lr}
-    8370:	e92d0030 	push	{r4, r5}
-    8374:	e3e03000 	mvn	r3, #0	; 0x0
-    8378:	e0200003 	eor	r0, r0, r3
-    837c:	e0211003 	eor	r1, r1, r3
-    8380:	e1a021a2 	lsr	r2, r2, #3
+00008350 <blinkDigits>:
+    8350:	e49d0004 	pop	{r0}		; (ldr r0, [sp], #4)
+    8354:	e52d2004 	push	{r2}		; (str r2, [sp, #-4]!)
+    8358:	ebffffda 	bl	82c8 <BlinkDigit>
+    835c:	e49d2004 	pop	{r2}		; (ldr r2, [sp], #4)
+    8360:	e2422001 	sub	r2, r2, #1
+    8364:	e3520000 	cmp	r2, #0
+    8368:	1afffff8 	bne	8350 <blinkDigits>
+    836c:	e8bd0070 	pop	{r4, r5, r6}
+    8370:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+    8374:	0003d090 	.word	0x0003d090
 
-00008384 <TimedLoop>:
-    8384:	e92d0004 	push	{r2}
-    8388:	e3a02004 	mov	r2, #4	; 0x4
-    838c:	e59f53b0 	ldr	r5, [pc, #944]	; 8744 <TurnOffMatrix+0xc8>
+00008378 <SlideNumber>:
+    8378:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    837c:	e52d4004 	push	{r4}		; (str r4, [sp, #-4]!)
+    8380:	e1a04001 	mov	r4, r1
+    8384:	e1a02000 	mov	r2, r0
+    8388:	e3a00000 	mov	r0, #0
+    838c:	e3a0300a 	mov	r3, #10
+    8390:	e3a0100b 	mov	r1, #11
+    8394:	e52d1004 	push	{r1}		; (str r1, [sp, #-4]!)
 
-00008390 <RegisterZeroLoop>:
-    8390:	e2422001 	sub	r2, r2, #1	; 0x1
-    8394:	e3a030ff 	mov	r3, #255	; 0xff
-    8398:	e1a04182 	lsl	r4, r2, #3
-    839c:	e1a03413 	lsl	r3, r3, r4
-    83a0:	e0003003 	and	r3, r0, r3
-    83a4:	e1a03433 	lsr	r3, r3, r4
-    83a8:	e1a04003 	mov	r4, r3
-    83ac:	e92d000f 	push	{r0, r1, r2, r3}
-    83b0:	e2041001 	and	r1, r4, #1	; 0x1
-    83b4:	e1a040a4 	lsr	r4, r4, #1
-    83b8:	e3a00009 	mov	r0, #9	; 0x9
-    83bc:	ebffff5f 	bl	8140 <SetGpio>
-    83c0:	e2041001 	and	r1, r4, #1	; 0x1
-    83c4:	e1a040a4 	lsr	r4, r4, #1
-    83c8:	e3a00008 	mov	r0, #8	; 0x8
-    83cc:	ebffff5b 	bl	8140 <SetGpio>
-    83d0:	e2041001 	and	r1, r4, #1	; 0x1
-    83d4:	e1a040a4 	lsr	r4, r4, #1
-    83d8:	e3a00006 	mov	r0, #6	; 0x6
-    83dc:	ebffff57 	bl	8140 <SetGpio>
-    83e0:	e2041001 	and	r1, r4, #1	; 0x1
-    83e4:	e1a040a4 	lsr	r4, r4, #1
-    83e8:	e3a00004 	mov	r0, #4	; 0x4
-    83ec:	ebffff53 	bl	8140 <SetGpio>
-    83f0:	e2041001 	and	r1, r4, #1	; 0x1
-    83f4:	e1a040a4 	lsr	r4, r4, #1
-    83f8:	e3a00005 	mov	r0, #5	; 0x5
-    83fc:	ebffff4f 	bl	8140 <SetGpio>
-    8400:	e2041001 	and	r1, r4, #1	; 0x1
-    8404:	e1a040a4 	lsr	r4, r4, #1
-    8408:	e3a00003 	mov	r0, #3	; 0x3
-    840c:	ebffff4b 	bl	8140 <SetGpio>
-    8410:	e2041001 	and	r1, r4, #1	; 0x1
-    8414:	e1a040a4 	lsr	r4, r4, #1
-    8418:	e3a00002 	mov	r0, #2	; 0x2
-    841c:	ebffff47 	bl	8140 <SetGpio>
-    8420:	e2041001 	and	r1, r4, #1	; 0x1
-    8424:	e1a040a4 	lsr	r4, r4, #1
-    8428:	e3a00007 	mov	r0, #7	; 0x7
-    842c:	ebffff43 	bl	8140 <SetGpio>
-    8430:	e20500ff 	and	r0, r5, #255	; 0xff
-    8434:	e92d0001 	push	{r0}
-    8438:	e1a05425 	lsr	r5, r5, #8
-    843c:	e3a01001 	mov	r1, #1	; 0x1
-    8440:	ebffff3e 	bl	8140 <SetGpio>
-    8444:	e3a00ffa 	mov	r0, #1000	; 0x3e8
-    8448:	ebffff1c 	bl	80c0 <WaitMicroSec>
-    844c:	e8bd0001 	pop	{r0}
-    8450:	e3a01000 	mov	r1, #0	; 0x0
-    8454:	ebffff39 	bl	8140 <SetGpio>
-    8458:	e8bd000f 	pop	{r0, r1, r2, r3}
-    845c:	e3520000 	cmp	r2, #0	; 0x0
-    8460:	1affffca 	bne	8390 <RegisterZeroLoop>
-    8464:	e3a02004 	mov	r2, #4	; 0x4
-    8468:	e59f52d8 	ldr	r5, [pc, #728]	; 8748 <TurnOffMatrix+0xcc>
+00008398 <cumulateDigits>:
+    8398:	e2800001 	add	r0, r0, #1
+    839c:	e92d0009 	push	{r0, r3}
+    83a0:	ebffff98 	bl	8208 <IntDiv>
+    83a4:	e1a02000 	mov	r2, r0
+    83a8:	e8bd0009 	pop	{r0, r3}
+    83ac:	e52d1004 	push	{r1}		; (str r1, [sp, #-4]!)
+    83b0:	e3520000 	cmp	r2, #0
+    83b4:	1afffff7 	bne	8398 <cumulateDigits>
+    83b8:	e3a0100b 	mov	r1, #11
+    83bc:	e2800001 	add	r0, r0, #1
+    83c0:	e52d1004 	push	{r1}		; (str r1, [sp, #-4]!)
+    83c4:	e1a03000 	mov	r3, r0
+    83c8:	e49d1004 	pop	{r1}		; (ldr r1, [sp], #4)
 
-0000846c <RegisterOneLoop>:
-    846c:	e2422001 	sub	r2, r2, #1	; 0x1
-    8470:	e3a030ff 	mov	r3, #255	; 0xff
-    8474:	e1a04182 	lsl	r4, r2, #3
-    8478:	e1a03413 	lsl	r3, r3, r4
-    847c:	e0013003 	and	r3, r1, r3
-    8480:	e1a03433 	lsr	r3, r3, r4
-    8484:	e1a04003 	mov	r4, r3
-    8488:	e92d000f 	push	{r0, r1, r2, r3}
-    848c:	e2041001 	and	r1, r4, #1	; 0x1
+000083cc <displayDigits>:
+    83cc:	e1a00001 	mov	r0, r1
+    83d0:	e49d1004 	pop	{r1}		; (ldr r1, [sp], #4)
+    83d4:	e1a02004 	mov	r2, r4
+    83d8:	e92d000a 	push	{r1, r3}
+    83dc:	eb000081 	bl	85e8 <SlideLeft>
+    83e0:	e8bd000a 	pop	{r1, r3}
+    83e4:	e2433001 	sub	r3, r3, #1
+    83e8:	e3530000 	cmp	r3, #0
+    83ec:	1afffff6 	bne	83cc <displayDigits>
+    83f0:	e49d4004 	pop	{r4}		; (ldr r4, [sp], #4)
+    83f4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+000083f8 <DisplayDoubleRegister>:
+    83f8:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    83fc:	e92d0030 	push	{r4, r5}
+    8400:	e3e03000 	mvn	r3, #0
+    8404:	e0200003 	eor	r0, r0, r3
+    8408:	e0211003 	eor	r1, r1, r3
+    840c:	e1a021a2 	lsr	r2, r2, #3
+
+00008410 <TimedLoop>:
+    8410:	e52d2004 	push	{r2}		; (str r2, [sp, #-4]!)
+    8414:	e3a02004 	mov	r2, #4
+    8418:	e59f53b0 	ldr	r5, [pc, #944]	; 87d0 <TurnOffMatrix+0xc8>
+
+0000841c <RegisterZeroLoop>:
+    841c:	e2422001 	sub	r2, r2, #1
+    8420:	e3a030ff 	mov	r3, #255	; 0xff
+    8424:	e1a04182 	lsl	r4, r2, #3
+    8428:	e1a03413 	lsl	r3, r3, r4
+    842c:	e0003003 	and	r3, r0, r3
+    8430:	e1a03433 	lsr	r3, r3, r4
+    8434:	e1a04003 	mov	r4, r3
+    8438:	e92d000f 	push	{r0, r1, r2, r3}
+    843c:	e2041001 	and	r1, r4, #1
+    8440:	e1a040a4 	lsr	r4, r4, #1
+    8444:	e3a00009 	mov	r0, #9
+    8448:	ebffff3c 	bl	8140 <SetGpio>
+    844c:	e2041001 	and	r1, r4, #1
+    8450:	e1a040a4 	lsr	r4, r4, #1
+    8454:	e3a00008 	mov	r0, #8
+    8458:	ebffff38 	bl	8140 <SetGpio>
+    845c:	e2041001 	and	r1, r4, #1
+    8460:	e1a040a4 	lsr	r4, r4, #1
+    8464:	e3a00006 	mov	r0, #6
+    8468:	ebffff34 	bl	8140 <SetGpio>
+    846c:	e2041001 	and	r1, r4, #1
+    8470:	e1a040a4 	lsr	r4, r4, #1
+    8474:	e3a00004 	mov	r0, #4
+    8478:	ebffff30 	bl	8140 <SetGpio>
+    847c:	e2041001 	and	r1, r4, #1
+    8480:	e1a040a4 	lsr	r4, r4, #1
+    8484:	e3a00005 	mov	r0, #5
+    8488:	ebffff2c 	bl	8140 <SetGpio>
+    848c:	e2041001 	and	r1, r4, #1
     8490:	e1a040a4 	lsr	r4, r4, #1
-    8494:	e3a00009 	mov	r0, #9	; 0x9
+    8494:	e3a00003 	mov	r0, #3
     8498:	ebffff28 	bl	8140 <SetGpio>
-    849c:	e2041001 	and	r1, r4, #1	; 0x1
+    849c:	e2041001 	and	r1, r4, #1
     84a0:	e1a040a4 	lsr	r4, r4, #1
-    84a4:	e3a00008 	mov	r0, #8	; 0x8
+    84a4:	e3a00002 	mov	r0, #2
     84a8:	ebffff24 	bl	8140 <SetGpio>
-    84ac:	e2041001 	and	r1, r4, #1	; 0x1
+    84ac:	e2041001 	and	r1, r4, #1
     84b0:	e1a040a4 	lsr	r4, r4, #1
-    84b4:	e3a00006 	mov	r0, #6	; 0x6
+    84b4:	e3a00007 	mov	r0, #7
     84b8:	ebffff20 	bl	8140 <SetGpio>
-    84bc:	e2041001 	and	r1, r4, #1	; 0x1
-    84c0:	e1a040a4 	lsr	r4, r4, #1
-    84c4:	e3a00004 	mov	r0, #4	; 0x4
-    84c8:	ebffff1c 	bl	8140 <SetGpio>
-    84cc:	e2041001 	and	r1, r4, #1	; 0x1
-    84d0:	e1a040a4 	lsr	r4, r4, #1
-    84d4:	e3a00005 	mov	r0, #5	; 0x5
-    84d8:	ebffff18 	bl	8140 <SetGpio>
-    84dc:	e2041001 	and	r1, r4, #1	; 0x1
-    84e0:	e1a040a4 	lsr	r4, r4, #1
-    84e4:	e3a00003 	mov	r0, #3	; 0x3
-    84e8:	ebffff14 	bl	8140 <SetGpio>
-    84ec:	e2041001 	and	r1, r4, #1	; 0x1
-    84f0:	e1a040a4 	lsr	r4, r4, #1
-    84f4:	e3a00002 	mov	r0, #2	; 0x2
-    84f8:	ebffff10 	bl	8140 <SetGpio>
-    84fc:	e2041001 	and	r1, r4, #1	; 0x1
-    8500:	e1a040a4 	lsr	r4, r4, #1
-    8504:	e3a00007 	mov	r0, #7	; 0x7
-    8508:	ebffff0c 	bl	8140 <SetGpio>
-    850c:	e20500ff 	and	r0, r5, #255	; 0xff
-    8510:	e92d0001 	push	{r0}
-    8514:	e1a05425 	lsr	r5, r5, #8
-    8518:	e3a01001 	mov	r1, #1	; 0x1
-    851c:	ebffff07 	bl	8140 <SetGpio>
-    8520:	e3a00ffa 	mov	r0, #1000	; 0x3e8
-    8524:	ebfffee5 	bl	80c0 <WaitMicroSec>
-    8528:	e8bd0001 	pop	{r0}
-    852c:	e3a01000 	mov	r1, #0	; 0x0
-    8530:	ebffff02 	bl	8140 <SetGpio>
-    8534:	e8bd000f 	pop	{r0, r1, r2, r3}
-    8538:	e3520000 	cmp	r2, #0	; 0x0
-    853c:	1affffca 	bne	846c <RegisterOneLoop>
-    8540:	e8bd0004 	pop	{r2}
-    8544:	e2422001 	sub	r2, r2, #1	; 0x1
-    8548:	e3520000 	cmp	r2, #0	; 0x0
-    854c:	1affff8c 	bne	8384 <TimedLoop>
-    8550:	e8bd0030 	pop	{r4, r5}
-    8554:	eb000048 	bl	867c <TurnOffMatrix>
-    8558:	e8bd8000 	pop	{pc}
+    84bc:	e20500ff 	and	r0, r5, #255	; 0xff
+    84c0:	e52d0004 	push	{r0}		; (str r0, [sp, #-4]!)
+    84c4:	e1a05425 	lsr	r5, r5, #8
+    84c8:	e3a01001 	mov	r1, #1
+    84cc:	ebffff1b 	bl	8140 <SetGpio>
+    84d0:	e3a00ffa 	mov	r0, #1000	; 0x3e8
+    84d4:	ebfffef9 	bl	80c0 <WaitMicroSec>
+    84d8:	e49d0004 	pop	{r0}		; (ldr r0, [sp], #4)
+    84dc:	e3a01000 	mov	r1, #0
+    84e0:	ebffff16 	bl	8140 <SetGpio>
+    84e4:	e8bd000f 	pop	{r0, r1, r2, r3}
+    84e8:	e3520000 	cmp	r2, #0
+    84ec:	1affffca 	bne	841c <RegisterZeroLoop>
+    84f0:	e3a02004 	mov	r2, #4
+    84f4:	e59f52d8 	ldr	r5, [pc, #728]	; 87d4 <TurnOffMatrix+0xcc>
 
-0000855c <SlideLeft>:
-    855c:	e92d4000 	push	{lr}
-    8560:	e350000b 	cmp	r0, #11	; 0xb
-    8564:	88bd8000 	pophi	{pc}
-    8568:	e351000b 	cmp	r1, #11	; 0xb
-    856c:	88bd8000 	pophi	{pc}
-    8570:	e92d07f0 	push	{r4, r5, r6, r7, r8, r9, sl}
-    8574:	e1a00180 	lsl	r0, r0, #3
-    8578:	e1a01181 	lsl	r1, r1, #3
-    857c:	e59f31c8 	ldr	r3, [pc, #456]	; 874c <TurnOffMatrix+0xd0>
-    8580:	e0800003 	add	r0, r0, r3
-    8584:	e0811003 	add	r1, r1, r3
-    8588:	e5904000 	ldr	r4, [r0]
-    858c:	e5916000 	ldr	r6, [r1]
-    8590:	e2800004 	add	r0, r0, #4	; 0x4
-    8594:	e2811004 	add	r1, r1, #4	; 0x4
-    8598:	e5905000 	ldr	r5, [r0]
-    859c:	e5917000 	ldr	r7, [r1]
-    85a0:	e3e08000 	mvn	r8, #0	; 0x0
-    85a4:	e3a09000 	mov	r9, #0	; 0x0
-    85a8:	e3a03000 	mov	r3, #0	; 0x0
+000084f8 <RegisterOneLoop>:
+    84f8:	e2422001 	sub	r2, r2, #1
+    84fc:	e3a030ff 	mov	r3, #255	; 0xff
+    8500:	e1a04182 	lsl	r4, r2, #3
+    8504:	e1a03413 	lsl	r3, r3, r4
+    8508:	e0013003 	and	r3, r1, r3
+    850c:	e1a03433 	lsr	r3, r3, r4
+    8510:	e1a04003 	mov	r4, r3
+    8514:	e92d000f 	push	{r0, r1, r2, r3}
+    8518:	e2041001 	and	r1, r4, #1
+    851c:	e1a040a4 	lsr	r4, r4, #1
+    8520:	e3a00009 	mov	r0, #9
+    8524:	ebffff05 	bl	8140 <SetGpio>
+    8528:	e2041001 	and	r1, r4, #1
+    852c:	e1a040a4 	lsr	r4, r4, #1
+    8530:	e3a00008 	mov	r0, #8
+    8534:	ebffff01 	bl	8140 <SetGpio>
+    8538:	e2041001 	and	r1, r4, #1
+    853c:	e1a040a4 	lsr	r4, r4, #1
+    8540:	e3a00006 	mov	r0, #6
+    8544:	ebfffefd 	bl	8140 <SetGpio>
+    8548:	e2041001 	and	r1, r4, #1
+    854c:	e1a040a4 	lsr	r4, r4, #1
+    8550:	e3a00004 	mov	r0, #4
+    8554:	ebfffef9 	bl	8140 <SetGpio>
+    8558:	e2041001 	and	r1, r4, #1
+    855c:	e1a040a4 	lsr	r4, r4, #1
+    8560:	e3a00005 	mov	r0, #5
+    8564:	ebfffef5 	bl	8140 <SetGpio>
+    8568:	e2041001 	and	r1, r4, #1
+    856c:	e1a040a4 	lsr	r4, r4, #1
+    8570:	e3a00003 	mov	r0, #3
+    8574:	ebfffef1 	bl	8140 <SetGpio>
+    8578:	e2041001 	and	r1, r4, #1
+    857c:	e1a040a4 	lsr	r4, r4, #1
+    8580:	e3a00002 	mov	r0, #2
+    8584:	ebfffeed 	bl	8140 <SetGpio>
+    8588:	e2041001 	and	r1, r4, #1
+    858c:	e1a040a4 	lsr	r4, r4, #1
+    8590:	e3a00007 	mov	r0, #7
+    8594:	ebfffee9 	bl	8140 <SetGpio>
+    8598:	e20500ff 	and	r0, r5, #255	; 0xff
+    859c:	e52d0004 	push	{r0}		; (str r0, [sp, #-4]!)
+    85a0:	e1a05425 	lsr	r5, r5, #8
+    85a4:	e3a01001 	mov	r1, #1
+    85a8:	ebfffee4 	bl	8140 <SetGpio>
+    85ac:	e3a00ffa 	mov	r0, #1000	; 0x3e8
+    85b0:	ebfffec2 	bl	80c0 <WaitMicroSec>
+    85b4:	e49d0004 	pop	{r0}		; (ldr r0, [sp], #4)
+    85b8:	e3a01000 	mov	r1, #0
+    85bc:	ebfffedf 	bl	8140 <SetGpio>
+    85c0:	e8bd000f 	pop	{r0, r1, r2, r3}
+    85c4:	e3520000 	cmp	r2, #0
+    85c8:	1affffca 	bne	84f8 <RegisterOneLoop>
+    85cc:	e49d2004 	pop	{r2}		; (ldr r2, [sp], #4)
+    85d0:	e2422001 	sub	r2, r2, #1
+    85d4:	e3520000 	cmp	r2, #0
+    85d8:	1affff8c 	bne	8410 <TimedLoop>
+    85dc:	e8bd0030 	pop	{r4, r5}
+    85e0:	eb000048 	bl	8708 <TurnOffMatrix>
+    85e4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-000085ac <looping>:
-    85ac:	e1a00006 	mov	r0, r6
-    85b0:	e3a0a008 	mov	sl, #8	; 0x8
-    85b4:	e04aa003 	sub	sl, sl, r3
-    85b8:	e1a00a30 	lsr	r0, r0, sl
-    85bc:	e0000009 	and	r0, r0, r9
-    85c0:	e0044008 	and	r4, r4, r8
-    85c4:	e0800004 	add	r0, r0, r4
-    85c8:	e1a01007 	mov	r1, r7
-    85cc:	e1a01a31 	lsr	r1, r1, sl
-    85d0:	e0011009 	and	r1, r1, r9
-    85d4:	e0055008 	and	r5, r5, r8
-    85d8:	e0811005 	add	r1, r1, r5
-    85dc:	e92d000c 	push	{r2, r3}
-    85e0:	ebffff61 	bl	836c <DisplayDoubleRegister>
-    85e4:	e8bd000c 	pop	{r2, r3}
-    85e8:	e1a09089 	lsl	r9, r9, #1
-    85ec:	e59fa15c 	ldr	sl, [pc, #348]	; 8750 <TurnOffMatrix+0xd4>
-    85f0:	e089900a 	add	r9, r9, sl
-    85f4:	e3e0a000 	mvn	sl, #0	; 0x0
-    85f8:	e029800a 	eor	r8, r9, sl
-    85fc:	e1a04084 	lsl	r4, r4, #1
-    8600:	e1a05085 	lsl	r5, r5, #1
-    8604:	e2833001 	add	r3, r3, #1	; 0x1
-    8608:	e3530008 	cmp	r3, #8	; 0x8
-    860c:	1affffe6 	bne	85ac <looping>
-    8610:	e8bd07f0 	pop	{r4, r5, r6, r7, r8, r9, sl}
-    8614:	e8bd8000 	pop	{pc}
+000085e8 <SlideLeft>:
+    85e8:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    85ec:	e350000b 	cmp	r0, #11
+    85f0:	849df004 	pophi	{pc}		; (ldrhi pc, [sp], #4)
+    85f4:	e351000b 	cmp	r1, #11
+    85f8:	849df004 	pophi	{pc}		; (ldrhi pc, [sp], #4)
+    85fc:	e92d07f0 	push	{r4, r5, r6, r7, r8, r9, sl}
+    8600:	e1a00180 	lsl	r0, r0, #3
+    8604:	e1a01181 	lsl	r1, r1, #3
+    8608:	e59f31c8 	ldr	r3, [pc, #456]	; 87d8 <TurnOffMatrix+0xd0>
+    860c:	e0800003 	add	r0, r0, r3
+    8610:	e0811003 	add	r1, r1, r3
+    8614:	e5904000 	ldr	r4, [r0]
+    8618:	e5916000 	ldr	r6, [r1]
+    861c:	e2800004 	add	r0, r0, #4
+    8620:	e2811004 	add	r1, r1, #4
+    8624:	e5905000 	ldr	r5, [r0]
+    8628:	e5917000 	ldr	r7, [r1]
+    862c:	e3e08000 	mvn	r8, #0
+    8630:	e3a09000 	mov	r9, #0
+    8634:	e3a03000 	mov	r3, #0
 
-00008618 <MatrixDigit>:
-    8618:	e92d4000 	push	{lr}
-    861c:	e350000a 	cmp	r0, #10	; 0xa
-    8620:	88bd8000 	pophi	{pc}
-    8624:	e1a02000 	mov	r2, r0
-    8628:	e1a02182 	lsl	r2, r2, #3
-    862c:	e59f3118 	ldr	r3, [pc, #280]	; 874c <TurnOffMatrix+0xd0>
-    8630:	e0822003 	add	r2, r2, r3
-    8634:	e5920000 	ldr	r0, [r2]
-    8638:	e2822004 	add	r2, r2, #4	; 0x4
-    863c:	e5921000 	ldr	r1, [r2]
-    8640:	e3a02ffa 	mov	r2, #1000	; 0x3e8
-    8644:	ebffff48 	bl	836c <DisplayDoubleRegister>
-    8648:	e8bd8000 	pop	{pc}
+00008638 <looping>:
+    8638:	e1a00006 	mov	r0, r6
+    863c:	e3a0a008 	mov	sl, #8
+    8640:	e04aa003 	sub	sl, sl, r3
+    8644:	e1a00a30 	lsr	r0, r0, sl
+    8648:	e0000009 	and	r0, r0, r9
+    864c:	e0044008 	and	r4, r4, r8
+    8650:	e0800004 	add	r0, r0, r4
+    8654:	e1a01007 	mov	r1, r7
+    8658:	e1a01a31 	lsr	r1, r1, sl
+    865c:	e0011009 	and	r1, r1, r9
+    8660:	e0055008 	and	r5, r5, r8
+    8664:	e0811005 	add	r1, r1, r5
+    8668:	e92d000c 	push	{r2, r3}
+    866c:	ebffff61 	bl	83f8 <DisplayDoubleRegister>
+    8670:	e8bd000c 	pop	{r2, r3}
+    8674:	e1a09089 	lsl	r9, r9, #1
+    8678:	e59fa15c 	ldr	sl, [pc, #348]	; 87dc <TurnOffMatrix+0xd4>
+    867c:	e089900a 	add	r9, r9, sl
+    8680:	e3e0a000 	mvn	sl, #0
+    8684:	e029800a 	eor	r8, r9, sl
+    8688:	e1a04084 	lsl	r4, r4, #1
+    868c:	e1a05085 	lsl	r5, r5, #1
+    8690:	e2833001 	add	r3, r3, #1
+    8694:	e3530008 	cmp	r3, #8
+    8698:	1affffe6 	bne	8638 <looping>
+    869c:	e8bd07f0 	pop	{r4, r5, r6, r7, r8, r9, sl}
+    86a0:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-0000864c <InitMatrix>:
-    864c:	e92d4000 	push	{lr}
-    8650:	e3a02002 	mov	r2, #2	; 0x2
+000086a4 <MatrixDigit>:
+    86a4:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    86a8:	e350000a 	cmp	r0, #10
+    86ac:	849df004 	pophi	{pc}		; (ldrhi pc, [sp], #4)
+    86b0:	e1a02000 	mov	r2, r0
+    86b4:	e1a02182 	lsl	r2, r2, #3
+    86b8:	e59f3118 	ldr	r3, [pc, #280]	; 87d8 <TurnOffMatrix+0xd0>
+    86bc:	e0822003 	add	r2, r2, r3
+    86c0:	e5920000 	ldr	r0, [r2]
+    86c4:	e2822004 	add	r2, r2, #4
+    86c8:	e5921000 	ldr	r1, [r2]
+    86cc:	e3a02ffa 	mov	r2, #1000	; 0x3e8
+    86d0:	ebffff48 	bl	83f8 <DisplayDoubleRegister>
+    86d4:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
 
-00008654 <forloop>:
-    8654:	e1a00002 	mov	r0, r2
-    8658:	e3a01001 	mov	r1, #1	; 0x1
-    865c:	e92d0004 	push	{r2}
-    8660:	ebfffea2 	bl	80f0 <SetGpioFunction>
-    8664:	e8bd0004 	pop	{r2}
-    8668:	e2822001 	add	r2, r2, #1	; 0x1
-    866c:	e3520012 	cmp	r2, #18	; 0x12
-    8670:	1afffff7 	bne	8654 <forloop>
-    8674:	eb000000 	bl	867c <TurnOffMatrix>
-    8678:	e8bd8000 	pop	{pc}
+000086d8 <InitMatrix>:
+    86d8:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    86dc:	e3a02002 	mov	r2, #2
 
-0000867c <TurnOffMatrix>:
-    867c:	e92d4000 	push	{lr}
-    8680:	e3a00002 	mov	r0, #2	; 0x2
-    8684:	e3a01001 	mov	r1, #1	; 0x1
-    8688:	ebfffeac 	bl	8140 <SetGpio>
-    868c:	e3a00003 	mov	r0, #3	; 0x3
-    8690:	e3a01001 	mov	r1, #1	; 0x1
-    8694:	ebfffea9 	bl	8140 <SetGpio>
-    8698:	e3a00004 	mov	r0, #4	; 0x4
-    869c:	e3a01001 	mov	r1, #1	; 0x1
-    86a0:	ebfffea6 	bl	8140 <SetGpio>
-    86a4:	e3a00005 	mov	r0, #5	; 0x5
-    86a8:	e3a01001 	mov	r1, #1	; 0x1
-    86ac:	ebfffea3 	bl	8140 <SetGpio>
-    86b0:	e3a00006 	mov	r0, #6	; 0x6
-    86b4:	e3a01001 	mov	r1, #1	; 0x1
-    86b8:	ebfffea0 	bl	8140 <SetGpio>
-    86bc:	e3a00007 	mov	r0, #7	; 0x7
-    86c0:	e3a01001 	mov	r1, #1	; 0x1
-    86c4:	ebfffe9d 	bl	8140 <SetGpio>
-    86c8:	e3a00008 	mov	r0, #8	; 0x8
-    86cc:	e3a01001 	mov	r1, #1	; 0x1
-    86d0:	ebfffe9a 	bl	8140 <SetGpio>
-    86d4:	e3a00009 	mov	r0, #9	; 0x9
-    86d8:	e3a01001 	mov	r1, #1	; 0x1
-    86dc:	ebfffe97 	bl	8140 <SetGpio>
-    86e0:	e3a0000a 	mov	r0, #10	; 0xa
-    86e4:	e3a01000 	mov	r1, #0	; 0x0
-    86e8:	ebfffe94 	bl	8140 <SetGpio>
-    86ec:	e3a0000b 	mov	r0, #11	; 0xb
-    86f0:	e3a01000 	mov	r1, #0	; 0x0
-    86f4:	ebfffe91 	bl	8140 <SetGpio>
-    86f8:	e3a0000c 	mov	r0, #12	; 0xc
-    86fc:	e3a01000 	mov	r1, #0	; 0x0
-    8700:	ebfffe8e 	bl	8140 <SetGpio>
-    8704:	e3a0000d 	mov	r0, #13	; 0xd
-    8708:	e3a01000 	mov	r1, #0	; 0x0
-    870c:	ebfffe8b 	bl	8140 <SetGpio>
-    8710:	e3a0000e 	mov	r0, #14	; 0xe
-    8714:	e3a01000 	mov	r1, #0	; 0x0
-    8718:	ebfffe88 	bl	8140 <SetGpio>
-    871c:	e3a0000f 	mov	r0, #15	; 0xf
-    8720:	e3a01000 	mov	r1, #0	; 0x0
-    8724:	ebfffe85 	bl	8140 <SetGpio>
-    8728:	e3a00010 	mov	r0, #16	; 0x10
-    872c:	e3a01000 	mov	r1, #0	; 0x0
-    8730:	ebfffe82 	bl	8140 <SetGpio>
-    8734:	e3a00011 	mov	r0, #17	; 0x11
-    8738:	e3a01000 	mov	r1, #0	; 0x0
-    873c:	ebfffe7f 	bl	8140 <SetGpio>
-    8740:	e8bd8000 	pop	{pc}
-    8744:	100e110f 	.word	0x100e110f
-    8748:	0c0b0d0a 	.word	0x0c0b0d0a
-    874c:	00008780 	.word	0x00008780
-    8750:	01010101 	.word	0x01010101
+000086e0 <forloop>:
+    86e0:	e1a00002 	mov	r0, r2
+    86e4:	e3a01001 	mov	r1, #1
+    86e8:	e52d2004 	push	{r2}		; (str r2, [sp, #-4]!)
+    86ec:	ebfffe7f 	bl	80f0 <SetGpioFunction>
+    86f0:	e49d2004 	pop	{r2}		; (ldr r2, [sp], #4)
+    86f4:	e2822001 	add	r2, r2, #1
+    86f8:	e3520012 	cmp	r2, #18
+    86fc:	1afffff7 	bne	86e0 <forloop>
+    8700:	eb000000 	bl	8708 <TurnOffMatrix>
+    8704:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+
+00008708 <TurnOffMatrix>:
+    8708:	e52de004 	push	{lr}		; (str lr, [sp, #-4]!)
+    870c:	e3a00002 	mov	r0, #2
+    8710:	e3a01001 	mov	r1, #1
+    8714:	ebfffe89 	bl	8140 <SetGpio>
+    8718:	e3a00003 	mov	r0, #3
+    871c:	e3a01001 	mov	r1, #1
+    8720:	ebfffe86 	bl	8140 <SetGpio>
+    8724:	e3a00004 	mov	r0, #4
+    8728:	e3a01001 	mov	r1, #1
+    872c:	ebfffe83 	bl	8140 <SetGpio>
+    8730:	e3a00005 	mov	r0, #5
+    8734:	e3a01001 	mov	r1, #1
+    8738:	ebfffe80 	bl	8140 <SetGpio>
+    873c:	e3a00006 	mov	r0, #6
+    8740:	e3a01001 	mov	r1, #1
+    8744:	ebfffe7d 	bl	8140 <SetGpio>
+    8748:	e3a00007 	mov	r0, #7
+    874c:	e3a01001 	mov	r1, #1
+    8750:	ebfffe7a 	bl	8140 <SetGpio>
+    8754:	e3a00008 	mov	r0, #8
+    8758:	e3a01001 	mov	r1, #1
+    875c:	ebfffe77 	bl	8140 <SetGpio>
+    8760:	e3a00009 	mov	r0, #9
+    8764:	e3a01001 	mov	r1, #1
+    8768:	ebfffe74 	bl	8140 <SetGpio>
+    876c:	e3a0000a 	mov	r0, #10
+    8770:	e3a01000 	mov	r1, #0
+    8774:	ebfffe71 	bl	8140 <SetGpio>
+    8778:	e3a0000b 	mov	r0, #11
+    877c:	e3a01000 	mov	r1, #0
+    8780:	ebfffe6e 	bl	8140 <SetGpio>
+    8784:	e3a0000c 	mov	r0, #12
+    8788:	e3a01000 	mov	r1, #0
+    878c:	ebfffe6b 	bl	8140 <SetGpio>
+    8790:	e3a0000d 	mov	r0, #13
+    8794:	e3a01000 	mov	r1, #0
+    8798:	ebfffe68 	bl	8140 <SetGpio>
+    879c:	e3a0000e 	mov	r0, #14
+    87a0:	e3a01000 	mov	r1, #0
+    87a4:	ebfffe65 	bl	8140 <SetGpio>
+    87a8:	e3a0000f 	mov	r0, #15
+    87ac:	e3a01000 	mov	r1, #0
+    87b0:	ebfffe62 	bl	8140 <SetGpio>
+    87b4:	e3a00010 	mov	r0, #16
+    87b8:	e3a01000 	mov	r1, #0
+    87bc:	ebfffe5f 	bl	8140 <SetGpio>
+    87c0:	e3a00011 	mov	r0, #17
+    87c4:	e3a01000 	mov	r1, #0
+    87c8:	ebfffe5c 	bl	8140 <SetGpio>
+    87cc:	e49df004 	pop	{pc}		; (ldr pc, [sp], #4)
+    87d0:	100e110f 	.word	0x100e110f
+    87d4:	0c0b0d0a 	.word	0x0c0b0d0a
+    87d8:	0000880c 	.word	0x0000880c
+    87dc:	01010101 	.word	0x01010101

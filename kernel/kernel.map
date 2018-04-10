@@ -1,74 +1,32 @@
 
 Discarded input sections
 
- .bss           0x00000000        0x0 build/palindromeInit.o
+ .bss           0x0000000000000000        0x0 build/palindromeInit.o
  .ARM.attributes
-                0x00000000        0x0 build/palindromeInit.o
- .glue_7        0x00000000        0x0 build/palindromeInit.o
- .glue_7t       0x00000000        0x0 build/palindromeInit.o
- .vfp11_veneer  0x00000000        0x0 build/palindromeInit.o
- .janus_2cc_veneer
-                0x00000000        0x0 build/palindromeInit.o
- .v4_bx         0x00000000        0x0 build/palindromeInit.o
- .bss           0x00000000        0x0 build/systemTimer.o
+                0x0000000000000000       0x12 build/palindromeInit.o
+ .bss           0x0000000000000000        0x0 build/systemTimer.o
  .ARM.attributes
-                0x00000000        0x0 build/systemTimer.o
- .glue_7        0x00000000        0x0 build/systemTimer.o
- .glue_7t       0x00000000        0x0 build/systemTimer.o
- .vfp11_veneer  0x00000000        0x0 build/systemTimer.o
- .janus_2cc_veneer
-                0x00000000        0x0 build/systemTimer.o
- .v4_bx         0x00000000        0x0 build/systemTimer.o
- .bss           0x00000000        0x0 build/gpio.o
+                0x0000000000000000       0x14 build/systemTimer.o
+ .bss           0x0000000000000000        0x0 build/gpio.o
  .ARM.attributes
-                0x00000000        0x0 build/gpio.o
- .glue_7        0x00000000        0x0 build/gpio.o
- .glue_7t       0x00000000        0x0 build/gpio.o
- .vfp11_veneer  0x00000000        0x0 build/gpio.o
- .janus_2cc_veneer
-                0x00000000        0x0 build/gpio.o
- .v4_bx         0x00000000        0x0 build/gpio.o
- .bss           0x00000000        0x0 build/main.o
+                0x0000000000000000       0x12 build/gpio.o
+ .bss           0x0000000000000000        0x0 build/main.o
  .ARM.attributes
-                0x00000000        0x0 build/main.o
- .glue_7        0x00000000        0x0 build/main.o
- .glue_7t       0x00000000        0x0 build/main.o
- .vfp11_veneer  0x00000000        0x0 build/main.o
- .janus_2cc_veneer
-                0x00000000        0x0 build/main.o
- .v4_bx         0x00000000        0x0 build/main.o
- .bss           0x00000000        0x0 build/arithmetic.o
+                0x0000000000000000       0x12 build/main.o
+ .bss           0x0000000000000000        0x0 build/arithmetic.o
  .ARM.attributes
-                0x00000000        0x0 build/arithmetic.o
- .glue_7        0x00000000        0x0 build/arithmetic.o
- .glue_7t       0x00000000        0x0 build/arithmetic.o
- .vfp11_veneer  0x00000000        0x0 build/arithmetic.o
- .janus_2cc_veneer
-                0x00000000        0x0 build/arithmetic.o
- .v4_bx         0x00000000        0x0 build/arithmetic.o
- .bss           0x00000000        0x0 build/blinkpattern.o
+                0x0000000000000000       0x14 build/arithmetic.o
+ .bss           0x0000000000000000        0x0 build/blinkpattern.o
  .ARM.attributes
-                0x00000000        0x0 build/blinkpattern.o
- .glue_7        0x00000000        0x0 build/blinkpattern.o
- .glue_7t       0x00000000        0x0 build/blinkpattern.o
- .vfp11_veneer  0x00000000        0x0 build/blinkpattern.o
- .janus_2cc_veneer
-                0x00000000        0x0 build/blinkpattern.o
- .v4_bx         0x00000000        0x0 build/blinkpattern.o
- .bss           0x00000000        0x0 build/matrixControl.o
+                0x0000000000000000       0x12 build/blinkpattern.o
+ .bss           0x0000000000000000        0x0 build/matrixControl.o
  .ARM.attributes
-                0x00000000        0x0 build/matrixControl.o
- .glue_7        0x00000000        0x0 build/matrixControl.o
- .glue_7t       0x00000000        0x0 build/matrixControl.o
- .vfp11_veneer  0x00000000        0x0 build/matrixControl.o
- .janus_2cc_veneer
-                0x00000000        0x0 build/matrixControl.o
- .v4_bx         0x00000000        0x0 build/matrixControl.o
+                0x0000000000000000       0x12 build/matrixControl.o
 
 Memory Configuration
 
 Name             Origin             Length             Attributes
-*default*        0x00000000         0xffffffff
+*default*        0x0000000000000000 0xffffffffffffffff
 
 Linker script and memory map
 
@@ -80,49 +38,51 @@ LOAD build/arithmetic.o
 LOAD build/blinkpattern.o
 LOAD build/matrixControl.o
 
-.init           0x00008000        0x4
+.init           0x0000000000008000        0x4
  *(.init)
- .init          0x00008000        0x4 build/main.o
-                0x00008000                _start
+ .init          0x0000000000008000        0x4 build/main.o
+                0x0000000000008000                _start
 
-.text           0x00008004      0x750
+.text           0x0000000000008004      0x7dc
  *(.text)
- .text          0x00008004       0xa4 build/palindromeInit.o
-                0x00008004                initPowersOfThree
- .text          0x000080a8       0x40 build/systemTimer.o
-                0x000080a8                GetSystemTimerBase
-                0x000080c0                WaitMicroSec
-                0x000080b0                GetTimeStamp
- .text          0x000080e8       0x98 build/gpio.o
-                0x000080f0                SetGpioFunction
-                0x000080e8                GetGpioAddress
-                0x00008140                SetGpio
- .text          0x00008180       0x5c build/main.o
- .text          0x000081dc       0x60 build/arithmetic.o
-                0x000081dc                IntDiv
- .text          0x0000823c       0xb0 build/blinkpattern.o
-                0x0000823c                BlinkDigit
-                0x0000828c                BlinkSingleRegister
- .text          0x000082ec      0x468 build/matrixControl.o
-                0x0000836c                DisplayDoubleRegister
-                0x00008618                MatrixDigit
-                0x0000855c                SlideLeft
-                0x000082ec                SlideNumber
-                0x0000864c                InitMatrix
-                0x0000867c                TurnOffMatrix
+ .text          0x0000000000008004       0xa4 build/palindromeInit.o
+                0x0000000000008004                initPowersOfThree
+ .text          0x00000000000080a8       0x40 build/systemTimer.o
+                0x00000000000080a8                GetSystemTimerBase
+                0x00000000000080b0                GetTimeStamp
+                0x00000000000080c0                WaitMicroSec
+ .text          0x00000000000080e8       0x98 build/gpio.o
+                0x00000000000080e8                GetGpioAddress
+                0x00000000000080f0                SetGpioFunction
+                0x0000000000008140                SetGpio
+ .text          0x0000000000008180       0x88 build/main.o
+ .text          0x0000000000008208       0xc0 build/arithmetic.o
+                0x0000000000008208                IntDiv
+                0x0000000000008268                Div16Reg
+                0x0000000000008280                LSL16Reg
+ .text          0x00000000000082c8       0xb0 build/blinkpattern.o
+                0x00000000000082c8                BlinkDigit
+                0x0000000000008318                BlinkSingleRegister
+ .text          0x0000000000008378      0x468 build/matrixControl.o
+                0x0000000000008378                SlideNumber
+                0x00000000000083f8                DisplayDoubleRegister
+                0x00000000000085e8                SlideLeft
+                0x00000000000086a4                MatrixDigit
+                0x00000000000086d8                InitMatrix
+                0x0000000000008708                TurnOffMatrix
 
-.data           0x00008754       0x8c
+.data           0x00000000000087e0       0x8c
  *(.data)
- .data          0x00008754        0x0 build/palindromeInit.o
- .data          0x00008754        0x0 build/systemTimer.o
- .data          0x00008754        0x0 build/gpio.o
- .data          0x00008754       0x8c build/main.o
-                0x00008780                matrixzero0
-                0x000087d8                nothing
-                0x00008758                blinkzero
- .data          0x000087e0        0x0 build/arithmetic.o
- .data          0x000087e0        0x0 build/blinkpattern.o
- .data          0x000087e0        0x0 build/matrixControl.o
+ .data          0x00000000000087e0        0x0 build/palindromeInit.o
+ .data          0x00000000000087e0        0x0 build/systemTimer.o
+ .data          0x00000000000087e0        0x0 build/gpio.o
+ .data          0x00000000000087e0       0x8c build/main.o
+                0x00000000000087e4                blinkzero
+                0x000000000000880c                matrixzero0
+                0x0000000000008864                nothing
+ .data          0x000000000000886c        0x0 build/arithmetic.o
+ .data          0x000000000000886c        0x0 build/blinkpattern.o
+ .data          0x000000000000886c        0x0 build/matrixControl.o
 
 /DISCARD/
  *(*)

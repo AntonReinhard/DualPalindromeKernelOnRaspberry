@@ -18,10 +18,10 @@ bl SetGpioFunction
 .unreq pinFunc
 .unreq pinNum
 
-@do stuff
+@initialize the pins for operation of the LED Matrix
 bl InitMatrix
 
-ldr r0,=0x80000
+/*ldr r0,=0x80000
 bl initPowersOfThree
 
 @first 6 hexdigits of 3^255 are given out in decimal blinks.
@@ -29,7 +29,31 @@ ldr r0,=0x83FF0	@should be 1175984
 ldr r0,[r0]
 mov r1,#75
 bl SlideNumber
+*/
 
+ldr r4,=0x100000
+ldr r5,=0x100004
+mov r1,#5
+str	r1,[r4]
+mov r1,#0
+str r1,[r5]
+
+Infiniteloop:
+	mov r1,#50 @duration
+	ldr r0,[r4] @load number
+	bl SlideNumber
+
+	mov r1, #50 @duration
+	ldr r0,[r5] @load next 32 bit of number
+	bl SlideNumber
+
+@leftshift by one
+	mov r0,r4 @target number address
+	mov r1,#3 @leftshift amount
+	mov r2,r4 @output address
+	bl LSL16Reg
+
+b Infiniteloop
 
 @turn off LED at the end
 

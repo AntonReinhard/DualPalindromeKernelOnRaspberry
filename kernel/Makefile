@@ -7,7 +7,7 @@
 
 # The toolchain to use. arm-none-eabi works, but there does exist 
 # arm-bcm2708-linux-gnueabi.
-ARMGNU ?= /home/Ruby/Programs/arm-2008q3/bin/arm-none-eabi
+ARMGNU ?= /bin/arm-none-eabi
 
 # The intermediate directory for compiled object files.
 BUILD = build/
